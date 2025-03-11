@@ -1,11 +1,11 @@
 interface MediaCardProps {
   title: string;
-  year: number;
+  releaseDate: string;
   overview: string;
   posterPath: string;
 }
 
-const MediaCard = ({ title, year, overview, posterPath }: MediaCardProps) => {
+const MediaCard = ({ title, releaseDate, overview, posterPath }: MediaCardProps) => {
   return (
     <div className="media-card">
       <img 
@@ -14,7 +14,7 @@ const MediaCard = ({ title, year, overview, posterPath }: MediaCardProps) => {
         className="media-poster"
       />
       <h3>{title}</h3>
-      <p>{year}</p>
+      <p>Año: {new Date(releaseDate).getFullYear()}</p>
       <p>{overview}</p>
     </div>
   );
