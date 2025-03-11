@@ -1,19 +1,28 @@
 import MediaCard from './MediaCard';
 
 interface MediaListProps {
-  media: any[];
+  media: {
+    title: string;
+    release_date: string;
+    overview: string;
+    poster_path: string;
+  }[];
 }
 
 const MediaList = ({ media }: MediaListProps) => {
+  if (media.length === 0) return <p>No hay resultados.</p>;
+
   return (
-    <div className="media-list">
-      {media.length > 0 ? (
-        media.map((item, index) => (
-          <MediaCard key={index} title={item.title} year={item.year} category={item.category} />
-        ))
-      ) : (
-        <p>No se encontraron resultados.</p>
-      )}
+    <div className="media-grid">
+      {media.map((item, index) => (
+        <MediaCard
+          key={index}
+          title={item.title}
+          releaseDate={item.release_date}
+          overview={item.overview}
+          posterPath={item.poster_path}
+        />
+      ))}
     </div>
   );
 };
