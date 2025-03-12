@@ -9,11 +9,17 @@ const Filters = ({ onSearch }: FiltersProps) => {
     type: 'movie',
     category: 'oscar',
     year: '',
+    page: 1, // Añadimos el estado de página
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handlePageChange = (newPage: number) => {
+    setFilters((prev) => ({ ...prev, page: newPage }));
+    onSearch({ ...filters, page: newPage }); // Envía la nueva página al backend
   };
 
   const handleSubmit = () => {
@@ -22,6 +28,7 @@ const Filters = ({ onSearch }: FiltersProps) => {
 
   return (
     <div className="filters">
+      {/* Selectores de tipo, categoría y año */}
       <select name="type" value={filters.type} onChange={handleChange}>
         <option value="movie">Películas</option>
         <option value="series">Series</option>
@@ -42,6 +49,15 @@ const Filters = ({ onSearch }: FiltersProps) => {
       />
 
       <button onClick={handleSubmit}>Buscar</button>
+
+      {/* Botones de paginación */}
+      <div className="pagination">
+        <button onClick={() => handlePageChange(filters.page - 1)} disabled={filters.page === 1}>
+          Anterior
+        </button>
+        <span>Página {filters.page}</span>
+        <button onClick={() => handlePageChange(filters.page + 1)}>Siguiente</button>
+      </div>
     </div>
   );
 };
