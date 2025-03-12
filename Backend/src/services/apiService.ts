@@ -9,13 +9,15 @@ const TMDB_API_URL = process.env.TMDB_API_URL!;
 export const fetchMediaFromExternalAPI = async (
   type: 'movie' | 'tv',
   category: string,
-  year?: string
+  year?: string,
+  page: number = 1 // Añadimos el parámetro page
 ): Promise<any[]> => {
   try {
     let endpoint = '';
     const params: Record<string, any> = {
       api_key: TMDB_API_KEY,
       language: 'es-ES',
+      page, // Pasamos el número de página
     };
 
     switch (category) {
@@ -35,13 +37,11 @@ export const fetchMediaFromExternalAPI = async (
 
     if (year) params.year = year;
 
-    // Endpoint dinámico para películas o series
     endpoint = `/discover/${type}`;
-    
     const response = await axios.get(`${TMDB_API_URL}${endpoint}`, { params });
-    return response.data.results;
+    return response.data; // Devuelve toda la respuesta (incluye info de paginación)
   } catch (error) {
     console.error('Error fetching TMDB:', error);
-    return [];
+    return { results: [], total_pages: 1, page: 1 }; // Respuesta por defecto
   }
 };
