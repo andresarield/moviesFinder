@@ -37,6 +37,11 @@ export const fetchMediaFromExternalAPI = async (
 
     if (year) params.year = year;
 
+    // if (startYear && endYear) {
+    //   params.primary_release_date_gte = `${startYear}-01-01`;
+    //   params.primary_release_date_lte = `${endYear}-12-31`;
+    // }
+
     endpoint = `/discover/${type}`;
     const response = await axios.get(`${TMDB_API_URL}${endpoint}`, { params });
     return response.data; // Devuelve toda la respuesta (incluye info de paginación)
