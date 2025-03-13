@@ -38,6 +38,8 @@ const Filters = ({ onSearch }: FiltersProps) => {
         <option value="oscar">Ganadoras Oscar</option>
         <option value="nominee">Nominadas</option>
         <option value="best-decade">Mejores de la década</option>
+        <option value="emmy">Ganadoras Emmy</option>
+  <option value="golden-globe">Ganadoras Globo de Oro</option>
       </select>
 
       <input
