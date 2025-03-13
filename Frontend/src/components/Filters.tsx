@@ -49,6 +49,21 @@ const Filters = ({ onSearch }: FiltersProps) => {
         onChange={handleChange}
         placeholder="Año"
       />
+      <input
+  type="number"
+  name="startYear"
+  value={filters.startYear}
+  onChange={handleChange}
+  placeholder="Año inicial"
+/>
+<input
+  type="number"
+  name="endYear"
+  value={filters.endYear}
+  onChange={handleChange}
+  placeholder="Año final"
+/>
+      
 
       <button onClick={handleSubmit}>Buscar</button>
 
