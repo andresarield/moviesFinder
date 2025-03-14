@@ -1,19 +1,20 @@
 import { Request, Response } from 'express';
-import { fetchMediaFromExternalAPI } from '../services/apiService';
+import { fetchMediaDetails } from '../services/apiService';
 
-export const getMedia = async (req: Request, res: Response) => {
+// Controlador para obtener detalles
+export const getMediaDetails = async (req: Request, res: Response) => {
   try {
-    const { type = 'movie', category = 'oscar', year, page = 1 } = req.query;
+    const { id } = req.params; // Obtiene el ID del medio
+    const type = req.query.type as 'movie' | 'tv'; // Obtiene el tipo (movie o tv)
 
-    const media = await fetchMediaFromExternalAPI(
-      type as 'movie' | 'tv',
-      category as string,
-      year as string,
-      parseInt(page as string, 10) // Convertir a número
-    );
+    if (!type || !['movie', 'tv'].includes(type)) {
+      return res.status(400).json({ error: 'Tipo inválido' });
+    }
 
-    res.status(200).json(media); // Devuelve toda la respuesta
+    const details = await fetchMediaDetails(type, parseInt(id, 10)); // Llama al servicio
+    res.status(200).json(details); // Devuelve los detalles
   } catch (error) {
-    res.status(500).json({ error: 'Error fetching media' });
+    console.error('Error fetching media details:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
