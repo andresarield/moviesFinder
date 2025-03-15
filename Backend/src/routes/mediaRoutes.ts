@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { getMediaDetails } from '../controllers/mediaController';
+import { getMedia, getMediaDetails, getGenres } from '../controllers/mediaController';
 
 export const mediaRouter = Router();
 
-mediaRouter.get('/', getMedia); // Endpoint para la lista de medios
-mediaRouter.get('/details/:id', getMediaDetails); // Endpoint para detalles
+mediaRouter.get('/', getMedia); // Lista de medios
+mediaRouter.get('/details/:id', getMediaDetails); // Detalles de un medio
+mediaRouter.get('/genres', getGenres); // Lista de géneros
