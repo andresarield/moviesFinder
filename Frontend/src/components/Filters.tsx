@@ -2,24 +2,21 @@ import { useState } from 'react';
 
 interface FiltersProps {
   onSearch: (filters: any) => void;
+  genres: { id: number; name: string }[]; // Lista de géneros
 }
 
-const Filters = ({ onSearch }: FiltersProps) => {
+const Filters = ({ onSearch, genres }: FiltersProps) => {
   const [filters, setFilters] = useState({
     type: 'movie',
     category: 'oscar',
     year: '',
-    page: 1, // Añadimos el estado de página
+    genre: '', // Nuevo estado para el género
+    page: 1,
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handlePageChange = (newPage: number) => {
-    setFilters((prev) => ({ ...prev, page: newPage }));
-    onSearch({ ...filters, page: newPage }); // Envía la nueva página al backend
   };
 
   const handleSubmit = () => {
@@ -28,7 +25,6 @@ const Filters = ({ onSearch }: FiltersProps) => {
 
   return (
     <div className="filters">
-      {/* Selectores de tipo, categoría y año */}
       <select name="type" value={filters.type} onChange={handleChange}>
         <option value="movie">Películas</option>
         <option value="series">Series</option>
@@ -38,8 +34,6 @@ const Filters = ({ onSearch }: FiltersProps) => {
         <option value="oscar">Ganadoras Oscar</option>
         <option value="nominee">Nominadas</option>
         <option value="best-decade">Mejores de la década</option>
-        <option value="emmy">Ganadoras Emmy</option>
-  <option value="golden-globe">Ganadoras Globo de Oro</option>
       </select>
 
       <input
@@ -49,32 +43,17 @@ const Filters = ({ onSearch }: FiltersProps) => {
         onChange={handleChange}
         placeholder="Año"
       />
-      <input
-  type="number"
-  name="startYear"
-  value={filters.startYear}
-  onChange={handleChange}
-  placeholder="Año inicial"
-/>
-<input
-  type="number"
-  name="endYear"
-  value={filters.endYear}
-  onChange={handleChange}
-  placeholder="Año final"
-/>
-      
+
+      <select name="genre" value={filters.genre} onChange={handleChange}>
+        <option value="">Todos los géneros</option>
+        {genres.map((genre) => (
+          <option key={genre.id} value={genre.id}>
+            {genre.name}
+          </option>
+        ))}
+      </select>
 
       <button onClick={handleSubmit}>Buscar</button>
-
-      {/* Botones de paginación */}
-      <div className="pagination">
-        <button onClick={() => handlePageChange(filters.page - 1)} disabled={filters.page === 1}>
-          Anterior
-        </button>
-        <span>Página {filters.page}</span>
-        <button onClick={() => handlePageChange(filters.page + 1)}>Siguiente</button>
-      </div>
     </div>
   );
 };
