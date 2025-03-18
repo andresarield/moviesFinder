@@ -11,7 +11,9 @@ function App() {
 
   // Función para buscar medios
   const handleSearch = async (filters: any) => {
-    const response = await fetch(`/api/moviesFinder?type=${filters.type}&category=${filters.category}&year=${filters.year}&page=${filters.page}`);
+    const response = await fetch(
+      `/api/moviesFinder?type=${filters.type}&category=${filters.category}&year=${filters.year}&genre=${filters.genre}&page=${filters.page}`
+    );
     const data = await response.json();
     setMedia(data.results);
     setTotalPages(data.total_pages);
