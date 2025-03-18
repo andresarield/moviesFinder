@@ -19,3 +19,16 @@ export const fetchMediaDetails = async (type: 'movie' | 'tv', id: number) => {
     return null;
   }
 };
+
+export const fetchGenresFromTMDB = async (type: 'movie' | 'tv') => {
+  try {
+    const endpoint = `/genre/${type}/list`;
+    const params = { api_key: TMDB_API_KEY, language: 'es-ES' };
+
+    const response = await axios.get(`${TMDB_API_URL}${endpoint}`, { params });
+    return response.data.genres; // Devuelve la lista de géneros
+  } catch (error) {
+    console.error('Error fetching genres:', error);
+    return [];
+  }
+};
