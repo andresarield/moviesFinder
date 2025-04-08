@@ -1,19 +1,19 @@
 import { Request, Response } from 'express';
-import { fetchGenresFromTMDB } from '../services/apiService';
+import { searchMediaFromTMDB } from '../services/apiService';
 
-// Controlador para obtener géneros
-export const getGenres = async (req: Request, res: Response) => {
+// Controlador para búsquedas
+export const searchMedia = async (req: Request, res: Response) => {
   try {
-    const type = req.query.type as 'movie' | 'tv'; // Obtiene el tipo (movie o tv)
+    const { query, type } = req.query;
 
-    if (!type || !['movie', 'tv'].includes(type)) {
-      return res.status(400).json({ error: 'Tipo inválido' });
+    if (!query || !type || !['movie', 'tv'].includes(type as string)) {
+      return res.status(400).json({ error: 'Consulta inválida' });
     }
 
-    const genres = await fetchGenresFromTMDB(type);
-    res.status(200).json(genres);
+    const results = await searchMediaFromTMDB(query as string, type as 'movie' | 'tv');
+    res.status(200).json(results);
   } catch (error) {
-    console.error('Error fetching genres:', error);
+    console.error('Error fetching search results:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
