@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 interface FiltersProps {
   onSearch: (filters: any) => void;
-  genres: { id: number; name: string }[]; // Lista de géneros
+  genres: { id: number; name: string }[];
 }
 
 const Filters = ({ onSearch, genres }: FiltersProps) => {
@@ -10,7 +10,8 @@ const Filters = ({ onSearch, genres }: FiltersProps) => {
     type: 'movie',
     category: 'oscar',
     year: '',
-    genre: '', // Nuevo estado para el género
+    genre: '',
+    query: '', // Nuevo estado para la búsqueda
     page: 1,
   });
 
@@ -19,8 +20,14 @@ const Filters = ({ onSearch, genres }: FiltersProps) => {
     setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = () => {
+  const handleSearch = () => {
     onSearch(filters);
+  };
+
+  const handleQuerySearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      onSearch(filters);
+    }
   };
 
   return (
@@ -53,7 +60,17 @@ const Filters = ({ onSearch, genres }: FiltersProps) => {
         ))}
       </select>
 
-      <button onClick={handleSubmit}>Buscar</button>
+      {/* Campo de búsqueda */}
+      <input
+        type="text"
+        name="query"
+        value={filters.query}
+        onChange={handleChange}
+        onKeyDown={handleQuerySearch}
+        placeholder="Buscar por título..."
+      />
+
+      <button onClick={handleSearch}>Buscar</button>
     </div>
   );
 };
