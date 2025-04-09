@@ -6,6 +6,24 @@ dotenv.config();
 const TMDB_API_KEY = process.env.TMDB_API_KEY!;
 const TMDB_API_URL = process.env.TMDB_API_URL!;
 
+export const searchMediaFromTMDB = async (query: string, type: 'movie' | 'tv') => {
+  try {
+    const endpoint = `/search/${type}`;
+    const params = {
+      api_key: TMDB_API_KEY,
+      language: 'es-ES',
+      query,
+      page: 1,
+    };
+
+    const response = await axios.get(`${TMDB_API_URL}${endpoint}`, { params });
+    return response.data.results; // Devuelve los resultados de la búsqueda
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    return [];
+  }
+};
+
 // Función para obtener detalles de un medio
 export const fetchMediaDetails = async (type: 'movie' | 'tv', id: number) => {
   try {
