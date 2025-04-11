@@ -6,6 +6,25 @@ dotenv.config();
 const TMDB_API_KEY = process.env.TMDB_API_KEY!;
 const TMDB_API_URL = process.env.TMDB_API_URL!;
 
+export const fetchTrendingMediaFromTMDB = async (
+  type: 'movie' | 'tv',
+  timeWindow: 'day' | 'week'
+) => {
+  try {
+    const endpoint = `/trending/${type}/${timeWindow}`;
+    const params = {
+      api_key: TMDB_API_KEY,
+      language: 'es-ES',
+    };
+
+    const response = await axios.get(`${TMDB_API_URL}${endpoint}`, { params });
+    return response.data.results; // Devuelve los resultados de trending
+  } catch (error) {
+    console.error('Error fetching trending media:', error);
+    return [];
+  }
+};
+
 export const searchMediaFromTMDB = async (query: string, type: 'movie' | 'tv') => {
   try {
     const endpoint = `/search/${type}`;
