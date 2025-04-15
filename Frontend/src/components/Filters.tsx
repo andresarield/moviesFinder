@@ -11,8 +11,8 @@ const Filters = ({ onSearch, genres }: FiltersProps) => {
     category: 'oscar',
     year: '',
     genre: '',
-    query: '', // Nuevo estado para la búsqueda
-    page: 1,
+    query: '',
+    page: 1, // Estado para la página actual
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement | HTMLInputElement>) => {
@@ -22,6 +22,12 @@ const Filters = ({ onSearch, genres }: FiltersProps) => {
 
   const handleSearch = () => {
     onSearch(filters);
+  };
+
+  const handlePageChange = (newPage: number) => {
+    if (newPage < 1) return; // Evita números negativos
+    setFilters((prev) => ({ ...prev, page: newPage }));
+    onSearch({ ...filters, page: newPage }); // Envía la nueva página al backend
   };
 
   const handleQuerySearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -71,6 +77,15 @@ const Filters = ({ onSearch, genres }: FiltersProps) => {
       />
 
       <button onClick={handleSearch}>Buscar</button>
+
+      {/* Botones de paginación */}
+      <div className="pagination">
+        <button onClick={() => handlePageChange(filters.page - 1)} disabled={filters.page === 1}>
+          Anterior
+        </button>
+        <span>Página {filters.page}</span>
+        <button onClick={() => handlePageChange(filters.page + 1)}>Siguiente</button>
+      </div>
     </div>
   );
 };
