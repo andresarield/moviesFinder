@@ -74,9 +74,9 @@ export const fetchMediaFromExternalAPI = async (
   type: 'movie' | 'tv',
   category: string,
   year?: string,
-  genre?: string, // Nuevo parámetro para el género
+  genre?: string,
   page: number = 1
-): Promise<any[]> => {
+): Promise<any> => {
   try {
     let endpoint = '';
     const params: Record<string, any> = {
@@ -93,7 +93,7 @@ export const fetchMediaFromExternalAPI = async (
         params.with_awards = 'oscar_nominee';
         break;
       case 'best-decade':
-        params.year = 2020;
+        params.year = 2020; // Ajusta según tu década
         params.sort_by = 'vote_average.desc';
         break;
       default:
@@ -101,13 +101,13 @@ export const fetchMediaFromExternalAPI = async (
     }
 
     if (year) params.year = year;
-    if (genre) params.with_genres = genre; // Aplica el filtro de género
+    if (genre) params.with_genres = genre;
 
     endpoint = `/discover/${type}`;
     const response = await axios.get(`${TMDB_API_URL}${endpoint}`, { params });
-    return response.data;
+    return response.data; // Devuelve toda la respuesta (incluye info de paginación)
   } catch (error) {
     console.error('Error fetching TMDB:', error);
-    return { results: [], total_pages: 1, page: 1 };
+    return { results: [], total_pages: 1, page: 1 }; // Respuesta por defecto
   }
 };
