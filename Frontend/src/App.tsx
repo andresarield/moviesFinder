@@ -4,11 +4,11 @@ import Filters from './components/Filters';
 import MediaList from './components/MediaList';
 import MediaDetails from './components/MediaDetails';
 import FavoritesPage from './components/FavoritesPage';
-import TrendingSection from './components/TrendingSection'; // Nuevo componente
+import TrendingSection from './components/TrendingSection';
 
 function App() {
   const [media, setMedia] = useState([]);
-  const [totalPages, setTotalPages] = useState(1);
+  const [totalPages, setTotalPages] = useState(1); // Estado para el total de páginas
   const [genres, setGenres] = useState([]);
 
   useEffect(() => {
@@ -28,13 +28,13 @@ function App() {
     }
 
     if (filters.query) {
-      url = `/api/moviesFinder/search?query=${encodeURIComponent(filters.query)}&type=${filters.type}`;
+      url = `/api/moviesFinder/search?query=${encodeURIComponent(filters.query)}&type=${filters.type}&page=${filters.page}`;
     }
 
     const response = await fetch(url);
     const data = await response.json();
     setMedia(data.results || data);
-    setTotalPages(data.total_pages || 1);
+    setTotalPages(data.total_pages || 1); // Actualiza el total de páginas
   };
 
   return (
@@ -47,7 +47,7 @@ function App() {
             path="/"
             element={
               <>
-                <TrendingSection /> {/* Sección de contenido popular */}
+                <TrendingSection />
                 <Filters onSearch={handleSearch} genres={genres} />
                 <MediaList media={media} totalPages={totalPages} />
               </>
