@@ -46,11 +46,36 @@ export const searchMediaFromTMDB = async (query: string, type: 'movie' | 'tv') =
 // Función para obtener detalles de un medio
 export const fetchMediaDetails = async (type: 'movie' | 'tv', id: number) => {
   try {
-    const endpoint = `/${type}/${id}`;
-    const params = { api_key: TMDB_API_KEY, language: 'es-ES' };
+    // Endpoint principal para detalles
+    const detailsEndpoint = `/${type}/${id}`;
+    const detailsParams = { api_key: TMDB_API_KEY, language: 'es-ES' };
 
-    const response = await axios.get(`${TMDB_API_URL}${endpoint}`, { params });
-    return response.data; // Devuelve los detalles del medio
+    // Endpoint para el elenco
+    const creditsEndpoint = `/${type}/${id}/credits`;
+    const creditsParams = { api_key: TMDB_API_KEY };
+
+    // Endpoint para plataformas de streaming
+    const watchProvidersEndpoint = `/${type}/${id}/watch/providers`;
+    const watchProvidersParams = { api_key: TMDB_API_KEY };
+
+    // Realizar todas las solicitudes
+    const [detailsResponse, creditsResponse, watchProvidersResponse] = await Promise.all([
+      axios.get(`${TMDB_API_URL}${detailsEndpoint}`, { params: detailsParams }),
+      axios.get(`${TMDB_API_URL}${creditsEndpoint}`, { params: creditsParams }),
+      axios.get(`${TMDB_API_URL}${watchProvidersEndpoint}`, { params: watchProvidersParams }),
+    ]);
+
+    // Combinar los datos
+    const details = detailsResponse.data;
+    const credits = creditsResponse.data;
+    const watchProviders = watchProvidersResponse.data;
+
+    return {
+      ...details,
+      cast: credits.cast.slice(0, 10), // Primeros 10 actores
+      crew: credits.crew.slice(0, 5), // Primeros 5 miembros del equipo
+      watchProviders: watchProviders.results?.ES || {}, // Plataformas en España
+    };
   } catch (error) {
     console.error('Error fetching media details:', error);
     return null;
