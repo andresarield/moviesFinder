@@ -37,58 +37,70 @@ function App() {
     setMedia(data.results || data);
     setTotalPages(data.total_pages || 1); // Actualiza el total de páginas
   };
-  return (
-    <ThemeProvider>
-      <BrowserRouter>
-        <div className="app min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
-          <div className="container mx-auto p-4">
-            <h1 className="text-3xl font-bold mb-6">MoviesFinder</h1>
-            <Routes>
-              {/* Rutas */}
-              <Route
-                path="/"
-                element={
-                  <>
-                    <TrendingSection />
-                    <Filters />
-                    <MediaList />
-                  </>
-                }
-              />
-              <Route path="/details/:id" element={<MediaDetails />} />
-              <Route path="/favorites" element={<FavoritesPage />} />
-            </Routes>
+  import { BrowserRouter, Routes, Route } from 'react-router-dom';
+  import { ThemeProvider } from './context/ThemeContext';
+  import Header from './components/Header'; // Nuevo componente
+  import Filters from './components/Filters';
+  import MediaList from './components/MediaList';
+  import MediaDetails from './components/MediaDetails';
+  import FavoritesPage from './components/FavoritesPage';
+  import TrendingSection from './components/TrendingSection';
+
+  function App() {
+    return (
+      <ThemeProvider>
+        <BrowserRouter>
+          <div className="app min-h-screen bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-white">
+            <div className="container mx-auto p-4">
+              <Header /> {/* Usa el componente Header */}
+              <Routes>
+                {/* Rutas */}
+                <Route
+                  path="/"
+                  element={
+                    <>
+                      <TrendingSection />
+                      <Filters />
+                      <MediaList />
+                    </>
+                  }
+                />
+                <Route path="/details/:id" element={<MediaDetails />} />
+                <Route path="/favorites" element={<FavoritesPage />} />
+              </Routes>
+            </div>
           </div>
-        </div>
-      </BrowserRouter>
-    </ThemeProvider>
-  );
-}
+        </BrowserRouter>
+      </ThemeProvider>
+    );
+  }
 
-//   return (
-//     <BrowserRouter>
-//       <div className="app">
-//         <h1>MoviesFinder</h1>
-//         <Routes>
-//           {/* Ruta principal: Lista de medios */}
-//           <Route
-//             path="/"
-//             element={
-//               <>
-//                 <TrendingSection />
-//                 <Filters onSearch={handleSearch} genres={genres} />
-//                 <MediaList media={media} totalPages={totalPages} />
-//               </>
-//             }
-//           />
-//           {/* Ruta para detalles de un medio */}
-//           <Route path="/details/:id" element={<MediaDetails />} />
-//           {/* Ruta para favoritos */}
-//           <Route path="/favorites" element={<FavoritesPage />} />
-//         </Routes>
-//       </div>
-//     </BrowserRouter>
-//   );
-// }
+  export default App;
 
-export default App;
+  //   return (
+  //     <BrowserRouter>
+  //       <div className="app">
+  //         <h1>MoviesFinder</h1>
+  //         <Routes>
+  //           {/* Ruta principal: Lista de medios */}
+  //           <Route
+  //             path="/"
+  //             element={
+  //               <>
+  //                 <TrendingSection />
+  //                 <Filters onSearch={handleSearch} genres={genres} />
+  //                 <MediaList media={media} totalPages={totalPages} />
+  //               </>
+  //             }
+  //           />
+  //           {/* Ruta para detalles de un medio */}
+  //           <Route path="/details/:id" element={<MediaDetails />} />
+  //           {/* Ruta para favoritos */}
+  //           <Route path="/favorites" element={<FavoritesPage />} />
+  //         </Routes>
+  //       </div>
+  //     </BrowserRouter>
+  //   );
+  // }
+
+  export default App;
